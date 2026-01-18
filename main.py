@@ -1,3 +1,4 @@
+import uuid
 from langgraph.graph import START, END, StateGraph
 from dotenv import load_dotenv
 from typing import List, TypedDict, Annotated
@@ -26,13 +27,20 @@ def main():
     graph.add_edge('chat_node', END)
     bot = graph.compile()
 
-    response = bot.invoke(
-        {
-            'messages': [HumanMessage(content='hi how are you?, please make response short')]
-        }
-    )
-
-    print(response['messages'][-1].content)
+    while True:
+        user_input = input("🤖: ")
+        instruction = 'please make response short'
+        if user_input in ['exit', 'bye']:
+            print('Thanks budy')
+            break
+        else:
+            response = bot.invoke(
+                {
+                    'messages': [HumanMessage(content=user_input+instruction )]
+                }
+            )
+            response = response['messages'][-1].content
+            print(f"👱: {response}\n")
 
 
 if __name__ == '__main__':
