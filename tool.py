@@ -1,5 +1,6 @@
 import undetected_chromedriver as uc
 import time
+from langchain_core.tools import tool
 
 def run():
     print("Launching Stealth Browser...")
@@ -20,6 +21,11 @@ def run():
     except KeyboardInterrupt:
         print("Closing...")
         driver.quit()
+
+@tool
+def add(a: int, b: int):
+    "add both a and b"
+    return a + b
 
 if __name__ == "__main__":
     run()

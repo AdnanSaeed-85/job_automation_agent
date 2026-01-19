@@ -1,3 +1,5 @@
+
+
 # ----------------------------
 # 2) System prompt
 # ----------------------------
@@ -34,7 +36,18 @@ CURRENT USER DETAILS (existing memories):
 
 TASK:
 - Review the user's latest message.
-- Extract user-specific info worth storing long-term (identity, stable preferences, ongoing projects/goals).
+- Extract ONLY long-term user information worth storing permanently:
+  ✅ Personal identity (name, location, role, occupation)
+  ✅ Stable preferences (coding style, communication preferences they explicitly state)
+  ✅ Ongoing projects or goals they mention
+  ✅ Tools, frameworks, or technologies they use regularly
+  
+- DO NOT extract:
+  ❌ One-time requests or actions (calculations, single queries)
+  ❌ Temporary instructions or context
+  ❌ Greetings or casual conversation
+  ❌ Things that are not directly stated by the user
+
 - For each extracted item, set is_new=true ONLY if it adds NEW information compared to CURRENT USER DETAILS.
 - If it is basically the same meaning as something already present, set is_new=false.
 - Keep each memory as a short atomic sentence.

@@ -11,12 +11,17 @@ from langgraph.store.postgres import PostgresStore
 from pydantic import BaseModel, Field
 from langgraph.store.base import BaseStore
 from langchain_core.runnables import RunnableConfig
-from prompts import SYSTEM_PROMPT_TEMPLATE, MEMORY_PROMPT
+from langgraph.prebuilt import ToolNode, tools_condition
+from tool import add
+from prompts import MEMORY_PROMPT, SYSTEM_PROMPT_TEMPLATE
 
 #-------------------------------------- Load and init LLMs ------------------------------------------
 load_dotenv()
 groq_llm = ChatGroq(model=GROQ_MODEL, temperature=TEMPERATURE)
 openai_llm = ChatOpenAI(model=OPENAI_MODEL, temperature=TEMPERATURE)
+
+tools = [add]
+groq_tooling = groq_llm.bind_tools(tools)
 
 #--------------------------------------- Build classes -------------------------------------------
 class state_class(TypedDict):
@@ -78,12 +83,14 @@ def chat_node(state: state_class, config: RunnableConfig, store: BaseStore):
         )
         
         # Generate response
-        response = groq_llm.invoke([system_msg] + state["messages"])
+        response = groq_tooling.invoke([system_msg] + state["messages"])
         return {"messages": [response]}
         
     except Exception as e:
         print(f"⚠️ Chat error: {e}")
         return {"messages": [HumanMessage(content="Sorry, I encountered an error. Please try again.")]}
+    
+tool_node = ToolNode(tools)
 
 #----------------------------------------- Main Function --------------------------------------------
 def main():
@@ -91,17 +98,31 @@ def main():
     graph = StateGraph(state_class)
     graph.add_node('chat_node', chat_node)
     graph.add_node('remember_node', remember_node)
+    graph.add_node('tool_node', tool_node)
     
     graph.add_edge(START, 'remember_node')
     graph.add_edge('remember_node', 'chat_node')
-    graph.add_edge('chat_node', END)
     
+    if tool_node:
+        def tools_with_logging(state: state_class):
+            print(f"⚙️ Executing tools...")
+            result =  tool_node.invoke(state)
+            print(f"✅ Tool execution completed\n")
+            return result
+            
+        graph.add_node("tools", tools_with_logging)
+
+        graph.add_conditional_edges("chat_node", tools_condition)
+        graph.add_edge("tools", "chat_node")
+    else:
+        graph.add_edge("chat_node", END)
+
     # Database connection
     DB_URI = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:5442/{POSTGRES_DB}?sslmode=disable"
     with PostgresStore.from_conn_string(DB_URI) as store:
         store.setup()
         bot = graph.compile(store=store)
-        config = {'configurable': {'user_id': 'user_3'}}
+        config = {'configurable': {'user_id': 'new_user'}}
         
         print("🤖 Chatbot ready! Type 'exit', 'bye', or 'quit' to end.\n")
         
@@ -116,14 +137,14 @@ def main():
                 if not user_input.strip():
                     continue
                 
-                instrustion = "NOTE:- please keep it simple and short ok"
+                # REMOVED the hardcoded instruction - let user control their own preferences
                 response = bot.invoke(
-                    {"messages": [{"role": "user", "content": user_input+instrustion}]}, 
+                    {"messages": [{"role": "user", "content": user_input}]}, 
                     config
                 )
                 print(f"🤖: {response['messages'][-1].content}\n")
                 
-                namespace = ('user', 'user_3', 'details')
+                namespace = ('user', 'new_user', 'details')
                 previous = store.search(namespace)
                 for it in previous:
                     print(f"STORED DATA:- {it.value['data']}")
