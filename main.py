@@ -15,11 +15,13 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from tool import add
 from prompts import MEMORY_PROMPT, SYSTEM_PROMPT_TEMPLATE
 from langgraph.checkpoint.postgres import PostgresSaver
+from langchain_openai.embeddings import OpenAIEmbeddings
 
 #-------------------------------------- Load and init LLMs ------------------------------------------
 load_dotenv()
 groq_llm = ChatGroq(model=GROQ_MODEL, temperature=TEMPERATURE)
 openai_llm = ChatOpenAI(model=OPENAI_MODEL, temperature=TEMPERATURE)
+embedded_llm = OpenAIEmbeddings(model='text-embedding-3-small')
 
 tools = [add]
 groq_tooling = groq_llm.bind_tools(tools)
@@ -39,6 +41,7 @@ class pydantic_2(BaseModel):
 pydantic_llm = groq_llm.with_structured_output(pydantic_2)
     
 #----------------------------------------- Define Nodes --------------------------------------------
+#------------ Remember Nodes -------------
 def remember_node(state: state_class, config: RunnableConfig, store: BaseStore):
     """Extract and store user memories"""
     try:
@@ -68,12 +71,12 @@ def remember_node(state: state_class, config: RunnableConfig, store: BaseStore):
     
     return {}
 
+#------------- Chat Nodes --------------
 def chat_node(state: state_class, config: RunnableConfig, store: BaseStore):
     """Generate response using memories"""
     try:
         user_id = config['configurable']['user_id']
         namespace = ('user', user_id, 'details')
-
         
         # Retrieve memories
         items = store.search(namespace)
@@ -92,6 +95,7 @@ def chat_node(state: state_class, config: RunnableConfig, store: BaseStore):
         print(f"⚠️ Chat error: {e}")
         return {"messages": [HumanMessage(content="Sorry, I encountered an error. Please try again.")]}
     
+#------------ Tool Nodes -------------
 tool_node = ToolNode(tools)
 
 #----------------------------------------- Main Function --------------------------------------------
@@ -163,8 +167,6 @@ def main():
                 break
             except Exception as e:
                 print(f"⚠️ Error processing message: {e}\n")
-
-        
 
 
 if __name__ == '__main__':
