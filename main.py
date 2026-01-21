@@ -12,17 +12,21 @@ from pydantic import BaseModel, Field
 from langgraph.store.base import BaseStore
 from langchain_core.runnables import RunnableConfig
 from langgraph.prebuilt import ToolNode, tools_condition
-from tool import add
 from prompts import MEMORY_PROMPT, SYSTEM_PROMPT_TEMPLATE
 from langgraph.checkpoint.postgres import PostgresSaver
+
+# --- NEW IMPORTS FOR HUMAN-IN-THE-LOOP ---
+from langgraph.types import Command, Interrupt 
+from tool import run_headhunter_agent, read_good_jobs_report
 
 #-------------------------------------- Load and init LLMs ------------------------------------------
 load_dotenv()
 groq_llm = ChatGroq(model=GROQ_MODEL, temperature=TEMPERATURE)
 openai_llm = ChatOpenAI(model=OPENAI_MODEL, temperature=TEMPERATURE)
 
-tools = [add]
-groq_tooling = groq_llm.bind_tools(tools)
+tools = [run_headhunter_agent, read_good_jobs_report]
+# groq_tooling = groq_llm.bind_tools(tools)
+openai_tooling = openai_llm.bind_tools(tools)
 
 #--------------------------------------- Build classes -------------------------------------------
 class state_class(TypedDict):
@@ -36,7 +40,7 @@ class pydantic_2(BaseModel):
     should_add: bool = Field(description="True if able to add, False if not")
     memories: List[pydantic_1] = Field(default_factory=list)
 
-pydantic_llm = groq_llm.with_structured_output(pydantic_2)
+pydantic_llm = openai_llm.with_structured_output(pydantic_2)
     
 #----------------------------------------- Define Nodes --------------------------------------------
 #------------ Remember Nodes -------------
@@ -86,7 +90,7 @@ def chat_node(state: state_class, config: RunnableConfig, store: BaseStore):
         )
         
         # Generate response
-        response = groq_tooling.invoke([system_msg] + state["messages"])
+        response = openai_tooling.invoke([system_msg] + state["messages"])
         return {"messages": [response]}
         
     except Exception as e:
@@ -132,40 +136,65 @@ def main():
             checkpointer=checkpointer
         )
 
-        user_name = 'dani'
-        thread_id = 't2'
+        user_name = 'u1'
+        thread_id = 't1'
         config = {'configurable': {'user_id': user_name, 'thread_id': thread_id}}
         
-        print("🤖 Chatbot ready! Type 'exit', 'bye', or 'quit' to end.\n")
+        print("🤖 HEADHUNTER READY! (Type 'exit' to quit)\n")
         
+        # ------------------------------------------------------------------
+        # NEW MAIN LOOP: HANDLES HUMAN-IN-THE-LOOP (INTERRUPTS)
+        # ------------------------------------------------------------------
         while True:
             try:
-                user_input = input("\nYou: ")
+                # 1. Check if the graph is paused (Interrupted)
+                snapshot = bot.get_state(config)
                 
-                if user_input.lower().strip() in ['exit', 'bye', 'quit']:
-                    print('👋 Thanks for chatting!')
-                    break
+                if snapshot.next and len(snapshot.tasks) > 0 and snapshot.tasks[0].interrupts:
+                    # --- RESUME MODE ---
+                    interrupt_val = snapshot.tasks[0].interrupts[0].value
+                    print(f"\n⚠️  ACTION REQUIRED: {interrupt_val}")
+                    
+                    user_decision = input("👉 Your Answer (yes/no): ")
+                    
+                    # Resume execution with the user's answer
+                    response = bot.invoke(
+                        Command(resume=user_decision), 
+                        config
+                    )
                 
-                if not user_input.strip():
-                    continue
-                
-                response = bot.invoke(
-                    {"messages": [{"role": "user", "content": user_input}]}, 
-                    config
-                )
-                print(f"🤖: {response['messages'][-1].content}\n")
-                
+                else:
+                    # --- NORMAL CHAT MODE ---
+                    user_input = input("\nYou: ")
+                    
+                    if user_input.lower().strip() in ['exit', 'bye', 'quit']:
+                        print('👋 Thanks for chatting!')
+                        break
+                    
+                    if not user_input.strip():
+                        continue
+                    
+                    response = bot.invoke(
+                        {"messages": [{"role": "user", "content": user_input}]}, 
+                        config
+                    )
+
+                # 2. Print Bot Response
+                if response and "messages" in response and len(response["messages"]) > 0:
+                    print(f"🤖: {response['messages'][-1].content}\n")
+                    
+                # 3. Print Memory (Optional Debug)
                 namespace = ('user', user_name, 'details')
                 previous = store.search(namespace)
+                # Uncomment below if you want to see memory every turn
                 for it in previous:
-                    print(f"STORED DATA:- {it.value['data']}")
+                   print(f"STORED DATA:- {it.value['data']}")
         
             except KeyboardInterrupt:
                 print("\n👋 Goodbye!")
                 break
             except Exception as e:
                 print(f"⚠️ Error processing message: {e}\n")
-
 
 if __name__ == '__main__':
     main()

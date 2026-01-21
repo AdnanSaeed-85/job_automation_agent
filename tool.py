@@ -2,148 +2,157 @@ import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 import time
 from langchain_groq import ChatGroq
+from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
+from langchain_core.tools import tool
 from dotenv import load_dotenv
 import re
 import os
-from CONFIG import MATCH_THRESHOLD, MAX_JOBS_TO_CHECK
+from langgraph.types import interrupt  # <--- NEW IMPORT
 
 # Load API Keys
 load_dotenv()
 
-def read_my_resume():
-    """Reads your resume from the text file"""
+# Config
+MATCH_THRESHOLD = 50
+
+def _read_my_resume():
     try:
         with open("resume.txt", "r", encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
         return None
 
-def extract_score(text):
-    """Helper to find the number in the AI response"""
+def _extract_score(text):
     match = re.search(r"SCORE:\s*(\d+)%", text)
     if not match:
-        match = re.search(r"(\d+)%", text) # Fallback if AI forgets "SCORE:"
-    
+        match = re.search(r"(\d+)%", text)
     if match:
         return int(match.group(1))
     return 0
 
-def run_agent():
-    print("🤖 AGENT ACTIVATED: 'The Headhunter'")
-    print(f"🎯 Goal: Find jobs with > {MATCH_THRESHOLD}% match.")
+@tool
+def run_headhunter_agent(job_title: str, location: str, job_limit: int):
+    """
+    Runs the autonomous job search.
+    Requires:
+    - job_title: e.g. "AI Engineer"
+    - location: e.g. "Dubai"
+    - job_limit: The maximum number of jobs to apply for.
+    """
+    # --- 1. HUMAN IN THE LOOP (PAYMENT GATE) ---
+    cost = job_limit * 2
+    print(f"\n✋ STOP! Checking Payment Authorization...")
+    print(f"   Request: {job_limit} jobs x $2 = ${cost} Total.")
     
-    # 1. Load Resume
-    my_resume = read_my_resume()
-    if not my_resume:
-        print("❌ ERROR: 'resume.txt' not found! Please create it.")
-        return
+    # This PAUSES the entire system until the user answers in main.py
+    user_decision = interrupt(f"Please approve the charge of ${cost} for {job_limit} applications. (yes/no)")
+    
+    if user_decision.lower() not in ['yes', 'y', 'confirm']:
+        return "❌ Transaction Cancelled. User declined the payment."
+    
+    print(f"✅ Payment Approved! Starting Agent for {job_limit} jobs...")
 
-    # 2. Setup Brain (Groq) & Eyes (Browser)
-    llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
+    # --- 2. THE AGENT LOGIC ---
+    print(f"🚀 AGENT ACTIVATED: Searching for '{job_title}' in '{location}'...")
     
-    # NOTE: headless=False is required to bypass Indeed's bot detection
+    my_resume = _read_my_resume()
+    if not my_resume:
+        return "❌ Error: 'resume.txt' not found."
+
+    # llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
     driver = uc.Chrome(headless=False, use_subprocess=True, version_main=143)
     
-    print("\n👀 Phase 1: Scouting Jobs...")
-    driver.get("https://ae.indeed.com/jobs?q=AI+Engineer&l=Dubai")
-    
-    # Wait for Cloudflare/Indeed to settle
-    time.sleep(8)
-    
-    # --- ROBUST SELECTOR STRATEGY (Finds links even if Indeed changes layout) ---
-    job_cards = driver.find_elements(By.CSS_SELECTOR, "h2.jobTitle a")
-    
-    if len(job_cards) == 0:
-        print("   ⚠️ Standard selector failed. Trying Backup #1...")
-        job_cards = driver.find_elements(By.CLASS_NAME, "jcs-JobTitle")
-        
-    if len(job_cards) == 0:
-        print("   ⚠️ Backup #1 failed. Trying Backup #2 (Deep Scan)...")
-        all_links = driver.find_elements(By.TAG_NAME, "a")
-        job_cards = [link for link in all_links if "rc/clk" in link.get_attribute("href") or "viewjob" in link.get_attribute("href")]
-
-    print(f"✅ Found {len(job_cards)} jobs. Checking top {MAX_JOBS_TO_CHECK}...")
-    
-    # Extract and Clean Links
-    job_links = []
-    for job in job_cards[:MAX_JOBS_TO_CHECK]:
-        try:
-            link = job.get_attribute("href")
-            # Convert messy redirect links to clean 'viewjob' links
-            if link and "jk=" in link:
-                job_id = link.split("jk=")[1].split("&")[0]
-                clean_link = f"https://ae.indeed.com/viewjob?jk={job_id}"
-                job_links.append(clean_link)
-            elif link:
-                job_links.append(link)
-        except:
-            continue
-
-    # Remove duplicates
-    job_links = list(set(job_links))
-
-    print("\n🧠 Phase 2: Analyzing Candidates...")
-    
-    # Prepare the Report File
-    with open("good_jobs.txt", "w", encoding="utf-8") as f:
-        f.write("=== MY HEADHUNTER REPORT ===\n\n")
-
-    # 3. Analyze Each Job
-    for i, link in enumerate(job_links):
-        print(f"\n[{i+1}/{len(job_links)}] Checking Job...")
-        
-        try:
-            driver.get(link)
-            time.sleep(4)
-            
-            # --- CRITICAL FIX: Handle External Links ---
-            try:
-                # Try to find the description text
-                jd_element = driver.find_element(By.ID, "jobDescriptionText")
-                jd = jd_element.text
-            except:
-                # If ID not found, it's likely an external website (Workday, Greenhouse, etc.)
-                print("   ⚠️ External Link or different layout. Skipping.")
-                continue 
-            
-            # Ask AI to Analyze
-            prompt = f"""
-            RESUME: {my_resume[:2000]}
-            JOB: {jd[:2000]}
-            
-            TASK: Analyze this match.
-            FORMAT YOUR RESPONSE EXACTLY LIKE THIS:
-            SCORE: [Number]%
-            SUMMARY: [1 sentence on why I fit]
-            MISSING: [1 skill I am missing]
-            """
-            response = llm.invoke([HumanMessage(content=prompt)]).content
-            
-            # Extract Score
-            score = extract_score(response)
-            print(f"   👉 Score: {score}%")
-            
-            # Save or Skip
-            if score >= MATCH_THRESHOLD:
-                print("   ✅ MATCH! Saving detailed report...")
-                with open("good_jobs.txt", "a", encoding="utf-8") as f:
-                    f.write(f"JOB LINK: {link}\n")
-                    f.write(f"{response}\n") 
-                    f.write("-" * 40 + "\n")
-            else:
-                print("   ❌ Low match. Skipping.")
-                
-        except Exception as e:
-            print(f"   ⚠️ Unexpected Error: {e}")
-
-    print("\n✅ DONE! Open 'good_jobs.txt' to see your briefing.")
-    
-    # Safe Exit (Prevents WinError 6 noise)
     try:
-        driver.quit()
-    except:
-        pass
+        # SCOUTING
+        url = f"https://ae.indeed.com/jobs?q={job_title.replace(' ', '+')}&l={location}"
+        driver.get(url)
+        
+        print("\n🛑 MANUAL CHECK: Click Cloudflare if needed. Press ENTER in terminal when jobs are visible.")
+        input("✅ Press ENTER to continue...")
+        
+        # Robust Selectors
+        job_cards = driver.find_elements(By.CSS_SELECTOR, "h2.jobTitle a")
+        if not job_cards:
+            job_cards = driver.find_elements(By.CLASS_NAME, "jcs-JobTitle")
+        if not job_cards:
+             job_cards = driver.find_elements(By.XPATH, "//a[contains(@href, '/viewjob') or contains(@href, '/rc/clk')]")
 
-if __name__ == "__main__":
-    run_agent()
+        count_found = len(job_cards)
+        
+        # Clean Links
+        job_links = []
+        for job in job_cards:
+            try:
+                href = job.get_attribute("href")
+                if href:
+                    if "jk=" in href:
+                        job_id = href.split("jk=")[1].split("&")[0]
+                        job_links.append(f"https://ae.indeed.com/viewjob?jk={job_id}")
+                    else:
+                        job_links.append(href)
+            except:
+                continue
+        
+        job_links = list(set(job_links))
+        
+        # LIMIT THE JOBS BASED ON USER INPUT
+        job_links = job_links[:job_limit] 
+
+        # ANALYZING
+        good_matches = 0
+        with open("good_jobs.txt", "w", encoding="utf-8") as f:
+            f.write(f"=== HEADHUNTER REPORT: {job_title} in {location} (Limit: {job_limit}) ===\n\n")
+        
+        for i, link in enumerate(job_links):
+            print(f"[{i+1}/{len(job_links)}] Checking...")
+            try:
+                driver.get(link)
+                time.sleep(2) 
+                
+                try:
+                    jd = driver.find_element(By.ID, "jobDescriptionText").text
+                except:
+                    jd = driver.find_element(By.TAG_NAME, "body").text[:4000]
+
+                prompt = f"""
+                RESUME: {my_resume[:2000]}
+                JOB: {jd[:2000]}
+                TASK: Analyze match. Format: "SCORE: 85%" then a summary.
+                """
+                response = llm.invoke([HumanMessage(content=prompt)]).content
+                score = _extract_score(response)
+                
+                print(f"   👉 Score: {score}%")
+                
+                if score >= MATCH_THRESHOLD:
+                    good_matches += 1
+                    with open("good_jobs.txt", "a", encoding="utf-8") as f:
+                        f.write(f"🔗 JOB LINK: {link}\n🤖 ANALYSIS:\n{response}\n")
+                        f.write("-" * 20 + " FULL JOB DESCRIPTION " + "-" * 20 + "\n")
+                        f.write(f"{jd}\n")
+                        f.write("=" * 50 + "\n\n")
+            except Exception as e:
+                print(f"Skipping job: {e}")
+
+    except Exception as e:
+        return f"Agent failed: {str(e)}"
+    finally:
+        try:
+            driver.quit()
+        except:
+            pass
+
+    return f"✅ DONE! Processed {len(job_links)} jobs (Cost: ${cost}). Found {good_matches} matches."
+
+@tool
+def read_good_jobs_report():
+    """Reads the 'good_jobs.txt' file."""
+    try:
+        if not os.path.exists("good_jobs.txt"):
+            return "❌ No job report found."
+        with open("good_jobs.txt", "r", encoding="utf-8") as f:
+            return f.read()
+    except Exception as e:
+        return f"Error: {str(e)}"

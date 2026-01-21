@@ -1,52 +1,105 @@
-=== MY HEADHUNTER REPORT ===
+=== HEADHUNTER REPORT: LLM Engineer in Dubai (Limit: 2) ===
 
-JOB LINK: https://ae.indeed.com/viewjob?jk=56875bb35a59927f
-SCORE: 80%
-SUMMARY: I fit this role because my experience in developing and deploying AI-based solutions, such as autonomous web agents and multi-agent conversational AI, aligns with the job's requirements for designing and deploying innovative AI systems.
-MISSING: Experience in computer vision, which is listed as a required skill for the AI Developer role, is not mentioned in my resume.
-----------------------------------------
-JOB LINK: https://ae.indeed.com/viewjob?jk=3fc9a5b209927ea3
-SCORE: 80%
-SUMMARY: I fit this role because my experience in building scalable and multi-functional AI systems, along with my technical skills in languages such as Python and AI frameworks like LangChain, align with the company's need for a software engineer who can design, develop, and maintain software applications.
-MISSING: Experience with software security, as the job description emphasizes the importance of ensuring software security, which is not explicitly mentioned in my resume.
-----------------------------------------
-JOB LINK: https://ae.indeed.com/viewjob?jk=7e07ed8e1b478b55
-SCORE: 80%
-SUMMARY: I fit this role because my experience in AI and machine learning, particularly in developing autonomous agents and integrating AI tools, aligns with the requirements of the Salesforce AI & Automation Associate position.
-MISSING: Salesforce Einstein AI & AgentForce solutions expertise, as my background is more focused on general AI and machine learning frameworks such as LangChain, LangGraph, and TensorFlow, rather than specific Salesforce technologies.
-----------------------------------------
-JOB LINK: https://ae.indeed.com/viewjob?jk=8f3ed96d66de1803
-SCORE: 90%
-SUMMARY: I fit this role because my strong academic background, hands-on experience in building scalable AI systems, and expertise in AI frameworks such as LangChain and LangGraph align with the job requirements and responsibilities.
-MISSING: Basic knowledge of Computer Vision, which is one of the AI technologies mentioned in the job description that I don't have explicitly listed in my technical skills.
-----------------------------------------
-JOB LINK: https://ae.indeed.com/viewjob?jk=c7b636383f45590e
-SCORE: 60%
-SUMMARY: I fit this role because my experience in AI and machine learning, particularly with LangChain, LangGraph, and RAG architectures, aligns with the job's requirements for managing AI workloads and integrating cloud-native AI services.
-MISSING: Container Orchestration using Kubernetes, as my resume does not mention experience with containerized AI workloads or Kubernetes, which is a key responsibility in the job description.
-----------------------------------------
-JOB LINK: https://ae.indeed.com/viewjob?jk=803e6b8cbd9f00d5
+🔗 JOB LINK: https://ae.indeed.com/viewjob?jk=872636a7c9c4a0a8
+🤖 ANALYSIS:
 SCORE: 85%
-SUMMARY: I fit this role because my experience in building scalable AI systems, expertise in LangGraph, MCP, and RAG architectures, and strong academic background align with the company's goal of advancing their platform to become more intelligent.
-MISSING: Experience with Generative AI for tasks such as data enrichment, smart content understanding, and automated decision-making, which is a key focus of the company's initiatives.
-----------------------------------------
-JOB LINK: https://ae.indeed.com/viewjob?jk=791221320ce3aa92
+
+Summary: Adnan Saeed's resume aligns well with the job description at talabat for a data scientist on the algorithms track. His experience as an AI & Machine Learning Engineer, particularly in developing autonomous systems and utilizing advanced architectures like LangGraph and RAG, demonstrates a strong foundation in machine learning and data-driven decision-making. His hands-on projects, such as the RAG-Based Intelligent Query System and Multi-Agent Conversational AI, showcase his ability to work with complex data models and implement innovative solutions, which is crucial for improving product and business decisions at talabat. Additionally, his technical skills in Python, SQL, and various AI frameworks are relevant to the role's requirements. However, the job description emphasizes a focus on data modeling, analysis, and experimentation, areas that could be further highlighted in his experience to strengthen the match. Overall, Adnan's background and skills make him a strong candidate for the position.
+-------------------- FULL JOB DESCRIPTION --------------------
+Company Description
+
+Since launching in Kuwait in 2004, talabat, the leading on-demand food and Q-commerce app for everyday deliveries, has been offering convenience and reliability to its customers. talabat’s local roots run deep, offering a real understanding of the needs of the communities we serve in eight countries across the region.
+We harness innovative technology and knowledge to simplify everyday life for our customers, optimize operations for our restaurants and local shops, and provide our riders with reliable earning opportunities daily.
+Here at talabat, we are building a high performance culture through engaged workforce and growing talent density. We're all about keeping it real and making a difference. Our 6,000+ strong talabaty are on an awesome mission to spread positive vibes. We are proud to be a multi great place to work award winner.
+
+Job Description
+
+As the leading delivery company in the region, we have a great responsibility and opportunity to impact the lives of millions of customers, restaurant partners, and riders. To realize our potential, we need to advance our platform to become much more intelligent in how it understands and serves our users.
+As a data scientist on the algorithms track, your mission will be to improve the quality of the decisions made across product and business via relevant, reliable, and actionable data. You will own a particular domain across product and business and will work closely with the corresponding product and business managers as part of a talented team of data scientists and data engineers. You will own the entire data value chain, including logging, data modeling, analysis, reporting, and experimentation. Many of our initiatives will focus on leveraging Generative AI for tasks such as data enrichment, smart content understanding, and automated decision-making to enhance user experiences and business operations.
+Responsibilities
+Leveraging ambiguous business problems as opportunities to drive objective criteria using data.
+Solving complex business problems using the simplest, most appropriate algorithms to deliver business value.
+Designing and implementing effective and impactful machine learning and generative AI systems in production.
+Developing a deep understanding of the product experiences and business processes that make up your area of focus.
+Developing a deep familiarity with the source data and its generating systems through documentation, interacting with the engineering teams, and systematic data profiling.
+Contributing heavily to the design and maintenance of the data models that allow us to measure performance and comprehend performance drivers for your area of focus.
+Working closely with product and business teams to identify important questions that can be answered effectively with data.
+Delivering well-formed, relevant, reliable, and actionable insights and recommendations to support data-driven decision-making through deep analysis and automated reports.
+Designing, planning, and analyzing experiments (A/B and multivariate tests).
+Supporting product and business managers with KPI design and goal setting.
+Mentoring other data scientists in their growth journeys.
+Contributing to improving our ways of working, our tooling, and our internal training programs.
+
+Qualifications
+
+Requirements
+Technical Experience
+Experience in machine learning, generative AI, deep learning, recommendation systems, pattern recognition, data mining, and artificial intelligence.
+Deep knowledge and experience in ML and GenAI frameworks (e.g. Scikit-learn, XGBoost, LightGBM, CatBoost, SVMs, Keras, TensorFlow, PyTorch, Hugging Face Transformers, LLM fine-tuning).
+Excellent SQL.
+Competence with reproducible data analysis using Python or R.
+Familiarity with data modeling and dimensional design.
+Strong command over the entire data lifecycle, including problem formulation, data auditing, rigorous analysis, interpretation, recommendations, and presentation.
+Familiarity with different types of analysis, including descriptive, exploratory, inferential, causal, and predictive analysis.
+Deep understanding of various experiment design and analysis workflows and the corresponding statistical techniques.
+Familiarity with product data (impressions, events, etc.) and product health measurement (conversion, engagement, retention, etc.).
+Experience with LLMs and NLP-based solutions for data enrichment and smart automation is a plus.
+Familiarity with BigQuery and the Google Cloud Platform is a plus.
+Data engineering and data pipeline development experience (e.g. via Airflow) is a plus.
+Qualifications
+Bachelor's degree in engineering, computer science, technology, or similar fields. A postgraduate degree is a plus but not required.
+4+ years of experience working in data science, machine learning, and Gen AI.
+Experience doing data science in an online consumer product setting is a plus.
+A good problem solver with a ‘figure it out’ growth mindset.
+An excellent collaborator.
+An excellent communicator.
+A strong sense of ownership and accountability.
+A ‘keep it simple’ approach to #makeithappen.
+==================================================
+
+🔗 JOB LINK: https://ae.indeed.com/viewjob?jk=11483dd0d7fe68e4
+🤖 ANALYSIS:
 SCORE: 85%
-SUMMARY: I fit this role because my experience in building scalable and multi-functional AI systems, as well as my expertise in LangGraph, MCP, and RAG architectures, aligns with the company's goal of establishing a cutting-edge AI team to enhance the energy experience for customers and internal operations.
-MISSING: Experience with Very Large Models (VLM) or Large Language Models (LLM) specifically for consumer-focused features, which is mentioned as a tool to be leveraged in the Speedy Onboarding process.
-----------------------------------------
-JOB LINK: https://ae.indeed.com/viewjob?jk=5f30a7305a15a114
-SCORE: 85%
-SUMMARY: I fit this role because my experience in building scalable AI systems, expertise in LangGraph, MCP, and RAG architectures, and strong coding skills in Python align with the job requirements for an AI Automation & Workflows Engineer.
-MISSING: Experience with agent memory, prompt engineering, or RLHF models, which is listed as a bonus skill in the job description, is a key area where I lack expertise.
-----------------------------------------
-JOB LINK: https://ae.indeed.com/viewjob?jk=ec44482fc0bffce1
-SCORE: 90%
-SUMMARY: I fit this job description because my experience with LangChain, LangGraph, and RAG architectures, as well as my proficiency in Python, SQL, and AI frameworks, aligns with the required skills for the AI Engineer position.
-MISSING: Experience with text-to-SQL models, specifically integrating them to convert natural language queries into database operations, is a skill that I appear to be missing based on the provided job description and my resume.
-----------------------------------------
-JOB LINK: https://ae.indeed.com/viewjob?jk=fd50e8d0c47ce4b2
-SCORE: 80%
-SUMMARY: I fit this role because my experience in AI and machine learning, particularly with LangGraph, MCP, and RAG architectures, aligns with the job's requirements for generative AI and large language models expertise.
-MISSING: Proficiency in PyTorch, as the job requires experience with this programming language, which is not listed in my technical skills.
-----------------------------------------
+
+Summary: Adnan Saeed's background as an AI & Machine Learning Engineer aligns well with DataCamp's mission to develop an AI tutoring system. His experience in building autonomous web agents and multi-agent conversational AI demonstrates his capability to create adaptive learning experiences. His expertise in LangGraph, MCP, and RAG architectures is particularly relevant for developing the core AI system that DataCamp envisions. Additionally, his hands-on experience with real-time data extraction and intelligent systems positions him to contribute effectively to the role. Adnan's proactive approach and focus on solving real-world problems resonate with DataCamp's values of ownership and customer focus, making him a strong candidate for the position.
+-------------------- FULL JOB DESCRIPTION --------------------
+About DataCamp
+DataCamp's mission is to empower everyone with the data and AI skills essential for 21st-century success. By providing practical, engaging learning experiences, DataCamp equips learners and organizations of all sizes to harness the power of data and AI. As a trusted partner to over 17 million learners and 6,000+ companies, including 80% of the Fortune 1000, DataCamp is leading the charge in addressing the critical data and AI skills shortage.
+About the role
+Research has consistently shown that one-on-one tutoring dramatically outperforms traditional classroom instruction—a finding known as Bloom's 2 Sigma Problem. Despite decades of awareness, no solution has successfully delivered personalized tutoring at scale. Until now.
+We are building an AI tutoring system designed to emulate and eventually surpass the best human tutors. You will work on the core AI system that delivers real-time, adaptive learning experiences to learners. If you're excited about building the future of human learning, this role is for you.
+About you
+At DataCamp, we seek individuals who embody our core values of data-driven decision-making, action, transparency, ownership, and customer focus. You thrive in a fast-paced, high-performing environment and are driven by a passion for making a meaningful impact. You're adaptable, embracing change and ambiguity with enthusiasm. Your initiative and entrepreneurial spirit push you beyond just meeting targets—you aim to understand the "why" behind our goals and take ownership to drive the business forward. You're a collaborative team player who values transparency and always seeks to improve and innovate. If this sounds like you, we encourage you to apply!
+Responsibilities
+Build and evolve the core AI tutoring system, including prompt architectures, agentic workflows, and real-time adaptive behaviors.
+Run rigorous experimentation and evaluation, developing custom metrics and frameworks to measure learning effectiveness and improve model reliability.
+Design and implement scalable, maintainable software, integrating AI capabilities with platform systems, content pipelines, and user experience components.
+Collaborate cross-functionally with educators, content creators, and product teams to translate pedagogical goals into technical solutions.
+Prototype and productionize novel model interactions, leveraging emerging research and capabilities to advance the tutor's intelligence.
+Ensure quality, safety, and observability through monitoring, testing, guardrails, and iterative refinement of model behavior.
+Share knowledge and elevate teammates, contributing to a culture of clarity, simplicity, and continuous learning.
+Qualifications
+Technical
+1+ years building complex LLM-based systems, with strong prompt engineering intuition and experience designing agentic workflows.
+Ability to design meaningful evaluation methods, including custom metrics and frameworks when off-the-shelf options fall short.
+Strong software engineering fundamentals, architectural thinking, and fluency in Python; comfortable working with production infrastructure, cloud environments, and CI/CD.
+Actively follows AI research and emerging capabilities, applying new ideas creatively to real problems.
+Product & Pedagogy
+Strong empathy for learners and content creators; able to translate pedagogical goals into system behavior and product decisions.
+Ability to reason holistically across AI behavior, content structure, platform features, and user experience.
+Familiarity with learning science or a desire to develop expertise.
+Character & Collaboration
+Drawn to difficult, ambiguous problems with no clear blueprint; persistent in exploring and refining solutions.
+Preference for elegance and simplicity in system design.
+Communicates clearly across mediums and enjoys mentoring and collaborating in small, high-ownership teams.
+Why Datacamp?
+Joining DataCamp means becoming part of a dynamic, creative, and international start-up. Here are just a few of the reasons why you'll love being on our team:
+Exciting challenges: Face new technical challenges daily, keeping your work engaging and rewarding.
+Competitive compensation: We offer a competitive salary with attractive benefits.
+Flexibility: Benefit from flexible working hours because the future is flexible!
+Continuous learning: Access a yearly learning budget for conferences & training to support your professional growth.
+Global retreats: Participate in international company retreats, fostering a global team spirit.
+Equipment: Yearly refreshment of your IT Equipment budget for your home working setup.
+Amazing team: Collaborate with a truly exceptional team—seriously, we're awesome!
+==================================================
+
