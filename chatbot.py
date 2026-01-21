@@ -11,8 +11,6 @@ from langgraph.store.postgres import PostgresStore
 from pydantic import BaseModel, Field
 from langgraph.store.base import BaseStore
 from langchain_core.runnables import RunnableConfig
-from langgraph.prebuilt import ToolNode, tools_condition
-from tool import add
 from prompts import MEMORY_PROMPT, SYSTEM_PROMPT_TEMPLATE
 from langgraph.checkpoint.postgres import PostgresSaver
 
@@ -20,9 +18,6 @@ from langgraph.checkpoint.postgres import PostgresSaver
 load_dotenv()
 groq_llm = ChatGroq(model=GROQ_MODEL, temperature=TEMPERATURE)
 openai_llm = ChatOpenAI(model=OPENAI_MODEL, temperature=TEMPERATURE)
-
-tools = [add]
-groq_tooling = groq_llm.bind_tools(tools)
 
 #--------------------------------------- Build classes -------------------------------------------
 class state_class(TypedDict):
@@ -86,15 +81,12 @@ def chat_node(state: state_class, config: RunnableConfig, store: BaseStore):
         )
         
         # Generate response
-        response = groq_tooling.invoke([system_msg] + state["messages"])
+        response = groq_llm.invoke([system_msg] + state["messages"])
         return {"messages": [response]}
         
     except Exception as e:
         print(f"⚠️ Chat error: {e}")
         return {"messages": [HumanMessage(content="Sorry, I encountered an error. Please try again.")]}
-    
-#------------ Tool Nodes -------------
-tool_node = ToolNode(tools)
 
 #----------------------------------------- Main Function --------------------------------------------
 def main():
@@ -105,21 +97,8 @@ def main():
     
     graph.add_edge(START, 'remember_node')
     graph.add_edge('remember_node', 'chat_node')
+    graph.add_edge('chat_node', END)
     
-    if tool_node:
-        def tools_with_logging(state: state_class):
-            print(f"⚙️ Executing tools...")
-            result =  tool_node.invoke(state)
-            print(f"✅ Tool execution completed\n")
-            return result
-            
-        graph.add_node("tools", tools_with_logging)
-
-        graph.add_conditional_edges("chat_node", tools_condition)
-        graph.add_edge("tools", "chat_node")
-    else:
-        graph.add_edge("chat_node", END)
-
     # Database connection
     DB_URI = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:5442/{POSTGRES_DB}?sslmode=disable"
     with PostgresStore.from_conn_string(DB_URI) as store, \
@@ -132,8 +111,8 @@ def main():
             checkpointer=checkpointer
         )
 
-        user_name = 'dani'
-        thread_id = 't2'
+        user_name = 'newuser'
+        thread_id = 'T1'
         config = {'configurable': {'user_id': user_name, 'thread_id': thread_id}}
         
         print("🤖 Chatbot ready! Type 'exit', 'bye', or 'quit' to end.\n")
@@ -165,7 +144,7 @@ def main():
                 break
             except Exception as e:
                 print(f"⚠️ Error processing message: {e}\n")
-
+                
 
 if __name__ == '__main__':
     main()

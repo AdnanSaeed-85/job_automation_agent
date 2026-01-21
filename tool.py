@@ -6,14 +6,10 @@ from langchain_core.messages import HumanMessage
 from dotenv import load_dotenv
 import re
 import os
+from CONFIG import MATCH_THRESHOLD, MAX_JOBS_TO_CHECK
 
 # Load API Keys
 load_dotenv()
-
-# ================= CONFIGURATION =================
-MATCH_THRESHOLD = 50   # Save jobs with a score higher than this
-MAX_JOBS_TO_CHECK = 15 # How many jobs to scan
-# =================================================
 
 def read_my_resume():
     """Reads your resume from the text file"""
