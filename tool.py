@@ -40,11 +40,74 @@ def _extract_score(text):
 def _get_smart_domain(country_input: str):
     c = country_input.lower().strip()
     mapping = {
-        "usa": "indeed.com", "us": "indeed.com", "united states": "indeed.com",
-        "canada": "ca.indeed.com", "uk": "indeed.co.uk", "united kingdom": "indeed.co.uk",
-        "uae": "ae.indeed.com", "dubai": "ae.indeed.com", "india": "in.indeed.com",
-        "pakistan": "pk.indeed.com", "australia": "au.indeed.com"
-    }
+    # North America
+    "usa": "indeed.com",
+    "us": "indeed.com",
+    "united states": "indeed.com",
+    "canada": "ca.indeed.com",
+    "mexico": "mx.indeed.com",
+
+    # Europe
+    "uk": "indeed.co.uk",
+    "united kingdom": "indeed.co.uk",
+    "ireland": "ie.indeed.com",
+    "germany": "de.indeed.com",
+    "france": "fr.indeed.com",
+    "italy": "it.indeed.com",
+    "spain": "es.indeed.com",
+    "netherlands": "nl.indeed.com",
+    "sweden": "se.indeed.com",
+    "norway": "no.indeed.com",
+    "denmark": "dk.indeed.com",
+    "switzerland": "ch.indeed.com",
+    "austria": "at.indeed.com",
+    "belgium": "be.indeed.com",
+    "poland": "pl.indeed.com",
+    "portugal": "pt.indeed.com",
+    "romania": "ro.indeed.com",
+    "czech republic": "cz.indeed.com",
+    "finland": "fi.indeed.com",
+
+    # Middle East
+    "uae": "ae.indeed.com",
+    "dubai": "ae.indeed.com",
+    "saudi arabia": "sa.indeed.com",
+    "qatar": "qa.indeed.com",
+    "kuwait": "kw.indeed.com",
+    "oman": "om.indeed.com",
+    "bahrain": "bh.indeed.com",
+    "egypt": "eg.indeed.com",
+
+    # Asia
+    "india": "in.indeed.com",
+    "pakistan": "pk.indeed.com",
+    "bangladesh": "bd.indeed.com",
+    "sri lanka": "lk.indeed.com",
+    "singapore": "sg.indeed.com",
+    "malaysia": "my.indeed.com",
+    "philippines": "ph.indeed.com",
+    "indonesia": "id.indeed.com",
+    "japan": "jp.indeed.com",
+    "south korea": "kr.indeed.com",
+    "china": "cn.indeed.com",
+    "hong kong": "hk.indeed.com",
+    "taiwan": "tw.indeed.com",
+    "thailand": "th.indeed.com",
+    "vietnam": "vn.indeed.com",
+
+    # Africa
+    "south africa": "za.indeed.com",
+    "nigeria": "ng.indeed.com",
+    "kenya": "ke.indeed.com",
+    "ghana": "gh.indeed.com",
+    "morocco": "ma.indeed.com",
+    "tunisia": "tn.indeed.com",
+
+    # Oceania
+    "australia": "au.indeed.com",
+    "new zealand": "nz.indeed.com",
+}
+
     return mapping.get(c, "indeed.com")
 
 def _scrape_jobs_from_page(driver, base_url):
