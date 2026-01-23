@@ -136,8 +136,8 @@ def main():
             checkpointer=checkpointer
         )
 
-        user_name = 'update_user_01'
-        thread_id = 'update_thread_01'
+        user_name = 'Update_user_02'
+        thread_id = 'Update_thread_02'
         config = {'configurable': {'user_id': user_name, 'thread_id': thread_id}}
         
         print("🤖 HEADHUNTER READY! (Type 'exit' to quit)\n")

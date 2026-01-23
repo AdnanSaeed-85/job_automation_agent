@@ -1,12 +1,92 @@
-=== JOB SEARCH REPORT ===
-Job Title: entry level ai engineer
-Location: New York, USA
-Date: 2026-01-22 21:22:47
-
+=== HEADHUNTER REPORT: Entry-level AI Engineer in Dubai (UAE) ===
+Domain: ae.indeed.com
+Total Jobs Scraped: 5
+Total Jobs Analyzed: 2
+Top 2 Matches Requested
+Matches Above Threshold (50%): 0
 
 ============================================================
-Job #1
-Title: Junior AI Engineer
-Match Score: 92%
-Link: https://indeed.com/viewjob?jk=a5763482d26280fc
+RANK #1 | SCORE: 20%
 ============================================================
+🔗 JOB LINK: https://ae.indeed.com/viewjob?jk=cdef0123456789ab
+
+🤖 AI ANALYSIS:
+SCORE: 20%
+
+The candidate, Adnan Saeed, has a strong background in AI and Machine Learning, with expertise in LangGraph, MCP, and RAG architectures. However, the job description is not available, making it difficult to assess the candidate's skills and experience against the specific job requirements.
+
+Assuming the job requires a certain level of experience, the candidate's internship experience and lack of explicit mention of years of experience may be a significant mismatch. Given the critical scoring rules, if the job requires 3+ years of experience and the candidate has less than 1 year, the penalty would be -30 points. If the job requires 5+ years of experience and the candidate has less than 2 years, the penalty would be -50 points.
+
+Additionally, without the job description, it's challenging to determine if the candidate has 70%+ of the required skills. While the candidate's technical skills, such as Python, SQL, and AI frameworks, are impressive, the lack of information about the job's specific requirements makes it difficult to assess the skills match.
+
+Overall, given the uncertainty surrounding the job description and the potential experience level mismatch, a conservative score of 20% is assigned. This score reflects the candidate's potential, but also acknowledges the significant uncertainty and potential mismatches between the candidate's experience and the job requirements.
+
+------------------------------------------------------------
+📄 FULL JOB DESCRIPTION:
+Skip to main content
+Home
+Company reviews
+Sign in
+Employers / Post Job
+Start of main content
+We can’t find this page
+It looks like this page doesn't exist or isn’t available right now. Check the URL for any typos or choose an option below.
+Return home
+Need more help? Contact us
+============================================================
+
+============================================================
+RANK #2 | SCORE: 10%
+============================================================
+🔗 JOB LINK: https://ae.indeed.com/viewjob?jk=6a523488b16cd9a9
+
+🤖 AI ANALYSIS:
+SCORE: 10%
+
+The candidate, Adnan Saeed, has a strong background in AI and Machine Learning, but his experience and skills do not match the requirements of the Purchasing Engineer job. The job requires a degree in Mechatronics Engineering, Electrical Engineering, Electronics Engineering, or Control & Automation Engineering, whereas Adnan's educational background is not specified, but his experience is in AI and Machine Learning.
+
+The job requires 1-2 years of experience in industrial automation/industrial electronics, but Adnan's experience is in building scalable AI systems, developing autonomous web agents, and implementing intelligent contact-form detection. There is no mention of industrial automation or electronics in his experience.
+
+Additionally, the job requires strong technical understanding of automation systems and industrial components, which is not evident in Adnan's profile. He has skills in languages like Python, SQL, and PostgreSQL, and AI frameworks like LangChain and TensorFlow, but these are not directly relevant to the job requirements.
+
+Given the significant mismatch in experience and skills, it is unlikely that the company would hire Adnan for this role. Therefore, a low score of 10% is assigned, indicating a poor match between the candidate's profile and the job requirements.
+
+------------------------------------------------------------
+📄 FULL JOB DESCRIPTION:
+Job Summary
+We are seeking a motivated Purchasing Engineer with a strong technical background in industrial electronics and automation to join our team in Dubai. This role is ideal for a fresh graduate or junior engineer looking to grow their career in procurement within a technical and industrial environment.
+Required Educational Background
+Bachelor’s degree in one of the following disciplines:
+Mechatronics Engineering
+Electrical Engineering
+Electronics Engineering
+Control & Automation Engineering
+Experience Requirements
+Fresh graduate or 1–2 years of experience in industrial automation / industrial electronics
+Direct purchasing experience is NOT required
+Strong technical understanding of automation systems and industrial components is essential
+Technical Background (Mandatory)
+Industrial Electronics & Automation
+PLCs, VFDs, HMIs, sensors, control systems
+Familiarity with industrial brands and automation components is a strong advantage
+Skills & Competencies
+Strong communication and coordination skills
+Ability to work collaboratively within a team environment
+Good analytical and problem-solving mindset
+Ability to learn procurement processes quickly
+Comfortable using AI tools
+Language Requirements
+Fluent English (spoken & written) – Mandatory
+Arabic is a strong plus
+Other Requirements
+Must be currently based in the UAE
+Willing to work full-time from our Dubai office
+What We Offer
+Entry-level opportunity with clear growth path
+Strong exposure to industrial automation markets
+Supportive technical and commercial team environment
+Hands-on learning in procurement, supply chain, and vendor coordination
+Job Type: Full-time
+Pay: AED3,000.00 - AED3,500.00 per month
+============================================================
+
