@@ -16,8 +16,6 @@ from prompts import MEMORY_PROMPT, SYSTEM_PROMPT_TEMPLATE
 from langgraph.checkpoint.postgres import PostgresSaver
 from langgraph.types import Command, Interrupt 
 from tool import run_headhunter_agent, read_good_jobs_report
-from CONFIG import POSTGRES_DB_URL
-DB_URI = POSTGRES_DB_URL
 
 #-------------------------------------- Load and init LLMs ------------------------------------------
 load_dotenv()

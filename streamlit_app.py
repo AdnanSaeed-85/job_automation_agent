@@ -5,8 +5,6 @@ from langgraph.checkpoint.postgres import PostgresSaver
 from langgraph.store.postgres import PostgresStore
 from langgraph.types import Command
 from dotenv import load_dotenv
-from CONFIG import POSTGRES_DB_URL
-DB_URI = POSTGRES_DB_URL
 
 # 1. IMPORT YOUR AGENT BRAIN
 # This works now because 'builder' is global in main.py
@@ -23,6 +21,7 @@ st.set_page_config(page_title="Agent HeadHunter", page_icon="🤖", layout="wide
 st.title("🤖 Agent HeadHunter")
 
 # Database Connection (Must match main.py)
+DB_URI = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:5442/{POSTGRES_DB}?sslmode=disable"
 
 # Initialize Memory (Session State)
 if "messages" not in st.session_state:
